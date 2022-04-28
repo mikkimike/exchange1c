@@ -89,7 +89,7 @@ class UserService
             $category = $this->request->get('category');
         }
         $this->dispatcher->dispatch(new ImportLog('Sync users'));
-        $xml = simplexml_load_string(file_get_contents(storage_path('app/1c_exchange/' . $category . '/users.xml')));
+        $xml = simplexml_load_string(file_get_contents(storage_path('app/1c_exchange/' . $category . '/' . $filename)));
 
         foreach ($xml as $item) {
             $this->ImportProcessDataBridge(new User1c($item, $category));

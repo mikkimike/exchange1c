@@ -76,7 +76,8 @@ abstract class AbstractService
         CategoryService $categoryService,
         OfferService $offerService,
         OrderService $orderService,
-        UserService $userService        
+        UserService $userService,
+        RelationService $relationService
     ) {
         $this->request = $request;
         $this->config = $config;
@@ -86,5 +87,6 @@ abstract class AbstractService
         $this->offerService = $offerService;
         $this->orderService = $orderService;
         $this->userService = $userService;
+        $this->relationService = $relationService;
     }
 }
