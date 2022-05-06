@@ -111,7 +111,7 @@ class CatalogService extends AbstractService
                 $this->userService->import();
                 break;
             }
-            case 'relations.xml':
+            case 'related.xml':
             {
                 $this->relationService->import();
                 break;
