@@ -28,6 +28,14 @@ class RelationService
      */
     private $modelBuilder;
 
+    public function __construct(Request $request, Config $config, EventDispatcherInterface $dispatcher, ModelBuilderInterface $modelBuilder)
+    {
+        $this->request = $request;
+        $this->config = $config;
+        $this->dispatcher = $dispatcher;
+        $this->modelBuilder = $modelBuilder;
+    }
+
     public function import()
     {
         $filename = basename($this->request->get('filename'));
