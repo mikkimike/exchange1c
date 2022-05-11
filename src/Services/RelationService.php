@@ -4,9 +4,11 @@ namespace Mikkimike\Exchange1C\Services;
 
 use Mikkimike\Exchange1C\Config;
 use Mikkimike\Exchange1C\Events\ImportLog;
+use Mikkimike\Exchange1C\Events\ImportProcessDataBridge;
 use Mikkimike\Exchange1C\Interfaces\EventDispatcherInterface;
 use Mikkimike\Exchange1C\Interfaces\ModelBuilderInterface;
 use Mikkimike\Exchange1C\PayloadTypes\BatchStart;
+use Mikkimike\Exchange1C\PayloadTypes\PayloadTypeInterface;
 use Mikkimike\Exchange1C\PayloadTypes\RelationProducts;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,14 +46,24 @@ class RelationService
         if ($this->request->has('category')) {
             $category = $this->request->get('category');
         }
-        $this->dispatcher->dispatch(new ImportLog('Sync users'));
+        $this->dispatcher->dispatch(new ImportLog('Sync products relations'));
         $xml = simplexml_load_string(file_get_contents(storage_path('app/1c_exchange/' . $category . '/' . $filename)));
 
+        $relations = [];
         foreach ($xml as $item) {
-            $this->ImportProcessDataBridge(new RelationProducts($item));
+            $productId = (string) $item->attributes()->Номенклатура;
+            $relatedProductId = (string) $item->СопутствующийТовар->attributes()->СопутствующийТовар;
+            $relations[$productId][] = $relatedProductId;
         }
+
+        $this->ImportProcessDataBridge(new RelationProducts($relations));
 
         $this->ImportProcessDataBridge(new BatchStart("RELATION PRODUCTS IMPORT"));
 
+    }
+    protected function ImportProcessDataBridge(PayloadTypeInterface $model): void
+    {
+        $event = new ImportProcessDataBridge($model);
+        $this->dispatcher->dispatch($event);
     }
 }
