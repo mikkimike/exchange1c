@@ -8,6 +8,7 @@ use Mikkimike\Exchange1C\Interfaces\EventDispatcherInterface;
 use Mikkimike\Exchange1C\Interfaces\ModelBuilderInterface;
 use Mikkimike\Exchange1C\PayloadTypes\BatchStart;
 use Mikkimike\Exchange1C\PayloadTypes\RelationProducts;
+use Symfony\Component\HttpFoundation\Request;
 
 class RelationService
 {
