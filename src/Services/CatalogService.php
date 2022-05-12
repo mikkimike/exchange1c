@@ -66,7 +66,6 @@ class CatalogService extends AbstractService
     public function file(): string
     {
         $this->authService->auth();
-
         return $this->loaderService->load();
     }
 
