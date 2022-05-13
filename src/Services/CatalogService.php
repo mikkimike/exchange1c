@@ -91,7 +91,7 @@ class CatalogService extends AbstractService
         $this->authService->auth();
         $filename = $this->request->get('filename');
 
-        $serviceTypes = ['import', 'offers', 'import_orders', 'users', 'related'];
+        $serviceTypes = ['import_orders', 'import', 'offers', 'users', 'related'];
 
         $currentType = false;
         foreach ($serviceTypes as $type) {
