@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace Mikkimike\Exchange1C\Services;
 
+
+
 /**
  * Class Catalog
  * Class for implementing CommerceML protocol
@@ -50,7 +52,7 @@ class CatalogService extends AbstractService
     public function init(): string
     {
         $this->authService->auth();
-        if (!$this->config->isDebug() || $this->request->has('is_save')) $this->loaderService->clearImportDirectory();
+        if (!$this->config->isDebug() && !$this->request->has('is_save')) $this->loaderService->clearImportDirectory();
         $zipEnable = function_exists('zip_open') && $this->config->isUseZip();
         $response = 'zip='.($zipEnable ? 'yes' : 'no')."\n";
         $response .= 'file_limit='.$this->config->getFilePart();
@@ -89,33 +91,32 @@ class CatalogService extends AbstractService
         $this->authService->auth();
         $filename = $this->request->get('filename');
 
-        switch ($filename) {
-            case 'import.xml':
-                {
-                    $this->categoryService->import();
-                    break;
-                }
-            case 'offers.xml':
-                {
-                    $this->offerService->import();
-                    break;
-                }
-            case 'import_orders.xml':
-            {
+        $serviceTypes = ['import', 'offers', 'import_orders', 'users', 'related'];
+
+        $currentType = false;
+        foreach ($serviceTypes as $type) {
+            if ($currentType) continue;
+            if (strpos($filename, $type) !== false) {
+                $currentType = $type;
+            }
+        }
+
+        switch ($currentType) {
+            case 'import':
+                $this->categoryService->import();
+                break;
+            case 'offers':
+                $this->offerService->import();
+                break;
+            case 'import_orders':
                 $this->orderService->import();
                 break;
-            }
-            case 'users.xml':
-            {
+            case 'users':
                 $this->userService->import();
                 break;
-            }
-            case 'related.xml':
-            {
+            case 'related':
                 $this->relationService->import();
                 break;
-            }
-
         }
 
         $response = "success\n";
