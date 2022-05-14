@@ -84,11 +84,26 @@ class FileLoaderService
             $path = DIRECTORY_SEPARATOR . $this->request->get('category') . DIRECTORY_SEPARATOR;
         }
 
-        $tmp_files = glob($this->config->getImportDir().$path.'*.*');
-        if (is_array($tmp_files)) {
-            foreach ($tmp_files as $v) {
-                unlink($v);
+        $fullPath = $this->config->getImportDir().$path;
+
+        $filename = $this->request->get('filename');
+
+        $files = [
+            $fullPath . 'classifier-' . $filename,
+            $fullPath . $filename
+        ];
+
+        foreach ($files as $file) {
+            if (file_exists($fullPath . 'classifier-' . $filename)) {
+                unlink($file);
             }
         }
+
+//        $tmp_files = glob(.'*.*');
+//        if (is_array($tmp_files)) {
+//            foreach ($tmp_files as $v) {
+//                unlink($v);
+//            }
+//        }
     }
 }
