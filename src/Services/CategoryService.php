@@ -98,7 +98,7 @@ class CategoryService
         $category = false;
         if ($this->request->has('category')) $category = $this->request->get('category');
         $commerce->loadImportXml($this->config->getFullPath($filename, $category));
-        $classifierFile = $this->config->getFullPath('classifier-' . $filename, $category);
+        $classifierFile = $this->config->getFullPath('classifier.xml', $category);
         if ($commerce->classifier->xml) {
             $commerce->classifier->xml->saveXML($classifierFile);
         } else {

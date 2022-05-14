@@ -88,15 +88,12 @@ class FileLoaderService
 
         $filename = $this->request->get('filename');
 
-        $files = [
-            $fullPath . 'classifier-' . $filename,
-            $fullPath . $filename
-        ];
+        if (file_exists($fullPath . 'classifier.xml') && $filename = 'import.xml') {
+            unlink($fullPath . 'classifier.xml');
+        }
 
-        foreach ($files as $file) {
-            if (file_exists($fullPath . 'classifier-' . $filename)) {
-                unlink($file);
-            }
+        if (file_exists($fullPath . $filename)) {
+            unlink($fullPath . $filename);
         }
 
 //        $tmp_files = glob(.'*.*');
