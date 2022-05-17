@@ -88,19 +88,19 @@ class FileLoaderService
 
         $filename = $this->request->get('filename');
 
-        if (file_exists($fullPath . 'classifier.xml') && $filename = 'import.xml') {
-            unlink($fullPath . 'classifier.xml');
-        }
-
-        if (file_exists($fullPath . $filename)) {
-            unlink($fullPath . $filename);
-        }
-
-//        $tmp_files = glob(.'*.*');
-//        if (is_array($tmp_files)) {
-//            foreach ($tmp_files as $v) {
-//                unlink($v);
-//            }
+//        if (file_exists($fullPath . 'classifier.xml') && $filename = 'import.xml') {
+//            unlink($fullPath . 'classifier.xml');
 //        }
+//
+//        if (file_exists($fullPath . $filename)) {
+//            unlink($fullPath . $filename);
+//        }
+
+        $tmp_files = glob($fullPath .'*.*');
+        if (is_array($tmp_files)) {
+            foreach ($tmp_files as $v) {
+                unlink($v);
+            }
+        }
     }
 }
