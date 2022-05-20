@@ -18,9 +18,12 @@ class Product1c implements PayloadTypeInterface
         $group = $commerce->classifier->getGroupById(
             (string) $product->xml->Группы->Ид
         );
-        $this->group = new \stdClass();
-        $this->group->id = $group->id;
-        $this->group->name = $group->name;
+        if (!empty($group)) {
+            $this->group = new \stdClass();
+            $this->group->id = $group->id;
+            $this->group->name = $group->name;
+        } else {
+            $this->group = null;
+        }
     }
-
 }
